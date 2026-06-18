@@ -26,9 +26,11 @@ Solve Two Sum
 ## Files
 
 ```text
+background.js   Handles GitHub login polling after the popup closes
+config.js       Public GitHub OAuth App client ID configuration
 manifest.json   Chrome extension manifest
 popup.html      Settings popup UI
-popup.js        Saves GitHub token and repo settings
+popup.js        Starts GitHub login and saves the chosen repository
 content.js      Detects accepted LeetCode submissions
 github.js       Creates files with the GitHub REST API
 README.md       Setup and testing instructions
@@ -56,38 +58,25 @@ You need a GitHub OAuth App client ID:
 6. Enable `Device flow` in the OAuth App settings.
 7. Copy the OAuth App `Client ID`.
 
+Paste the OAuth App `Client ID` into [config.js](config.js):
+
+```js
+clientId: "YOUR_CLIENT_ID_HERE"
+```
+
 Then in the extension popup:
 
-1. Paste the `Client ID`.
-2. Click `Sign in with GitHub`.
-3. Enter the displayed code on the GitHub page that opens.
-4. Return to the extension popup.
-5. Click `Complete login`.
-6. Choose the repository you want submissions to sync into.
+1. Click `Sign in with GitHub`.
+2. Sign in and authorize on the GitHub page that opens.
+3. Enter the displayed code if GitHub asks for it.
+4. Open the extension popup again.
+5. Choose the repository you want submissions to sync into.
 
 The login asks for the `repo` scope so the extension can list repositories and create files in the selected repository.
 
-## Manual Token Fallback
-
-1. Go to GitHub settings.
-2. Open `Developer settings`.
-3. Open `Personal access tokens`.
-4. Create a fine-grained token.
-5. Select the target repository.
-6. Give the token repository `Contents` permission with `Read and write` access.
-7. Copy the token.
-
-Classic personal access tokens can also work if they have the `repo` scope, but a fine-grained token limited to one repository is safer.
-
 ## Configure The Extension
 
-Open the extension popup and enter:
-
-- GitHub OAuth App client ID, then sign in and choose a repository
-- Or a GitHub personal access token, username, and repository name
-- Branch name, usually `main`
-
-Choosing a repository saves the repo settings automatically. Click `Save settings` after manual edits.
+Open the extension popup, sign in with GitHub, and choose a repository. Choosing a repository saves the repo owner, repo name, and default branch automatically.
 
 Settings are stored in Chrome local storage on your machine. There is no backend.
 
@@ -107,6 +96,7 @@ The extension logs errors in the page console:
 - Missing GitHub username or repository name
 - GitHub API errors
 - Code not detected
+- Missing OAuth Client ID in `config.js`
 
 If code cannot be detected from the LeetCode editor, the extension still creates the Markdown file and writes `Code was not detected.` inside the code block.
 

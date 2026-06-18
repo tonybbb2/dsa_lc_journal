@@ -1,4 +1,5 @@
 (function () {
+  const root = globalThis;
   const GITHUB_API_BASE = "https://api.github.com";
   const GITHUB_LOGIN_BASE = "https://github.com/login";
 
@@ -140,7 +141,7 @@
     return response.json();
   }
 
-  window.LeetCodeGitHub = {
+  root.LeetCodeGitHub = {
     createFile,
     getCurrentUser,
     listRepositories,
