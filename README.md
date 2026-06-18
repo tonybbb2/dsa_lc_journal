@@ -42,7 +42,32 @@ README.md       Setup and testing instructions
 4. Select this repository folder.
 5. Pin or open the extension popup.
 
-## Create A GitHub Token
+## Sign In With GitHub
+
+This extension supports GitHub login with the OAuth device flow. There is still no backend and no client secret in the extension.
+
+You need a GitHub OAuth App client ID:
+
+1. Go to GitHub settings.
+2. Open `Developer settings`.
+3. Open `OAuth Apps`.
+4. Create a new OAuth App.
+5. Use any local homepage URL, such as `http://localhost`.
+6. Enable `Device flow` in the OAuth App settings.
+7. Copy the OAuth App `Client ID`.
+
+Then in the extension popup:
+
+1. Paste the `Client ID`.
+2. Click `Sign in with GitHub`.
+3. Enter the displayed code on the GitHub page that opens.
+4. Return to the extension popup.
+5. Click `Complete login`.
+6. Choose the repository you want submissions to sync into.
+
+The login asks for the `repo` scope so the extension can list repositories and create files in the selected repository.
+
+## Manual Token Fallback
 
 1. Go to GitHub settings.
 2. Open `Developer settings`.
@@ -58,12 +83,11 @@ Classic personal access tokens can also work if they have the `repo` scope, but 
 
 Open the extension popup and enter:
 
-- GitHub personal access token
-- GitHub username
-- Repository name
+- GitHub OAuth App client ID, then sign in and choose a repository
+- Or a GitHub personal access token, username, and repository name
 - Branch name, usually `main`
 
-Click `Save settings`.
+Choosing a repository saves the repo settings automatically. Click `Save settings` after manual edits.
 
 Settings are stored in Chrome local storage on your machine. There is no backend.
 

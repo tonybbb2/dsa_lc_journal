@@ -3,10 +3,11 @@
   "name": "LeetCode Accepted to GitHub",
   "version": "1.0.0",
   "description": "Creates a GitHub contribution by saving accepted LeetCode submissions to a repository.",
-  "permissions": ["storage"],
+  "permissions": ["storage", "tabs"],
   "host_permissions": [
     "https://leetcode.com/problems/*",
-    "https://api.github.com/*"
+    "https://api.github.com/*",
+    "https://github.com/login/*"
   ],
   "action": {
     "default_popup": "popup.html",

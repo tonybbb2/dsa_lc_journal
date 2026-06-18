@@ -26,7 +26,8 @@
         font-weight: 700;
       }
 
-      input {
+      input,
+      select {
         box-sizing: border-box;
         width: 100%;
         margin-top: 4px;
@@ -53,6 +54,40 @@
         background: #1d4ed8;
       }
 
+      button.secondary {
+        color: #1f2937;
+        background: #e5e7eb;
+      }
+
+      button.secondary:hover {
+        background: #d1d5db;
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .hint {
+        margin-top: 6px;
+        font-size: 12px;
+        line-height: 1.4;
+        color: #64748b;
+      }
+
+      .device-code {
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background: #f8fafc;
+        font-family: Consolas, monospace;
+        font-size: 20px;
+        font-weight: 700;
+        text-align: center;
+        letter-spacing: 1px;
+      }
+
       #status {
         min-height: 18px;
         margin-top: 10px;
@@ -71,11 +106,26 @@
   <body>
     <h1>LeetCode to GitHub</h1>
 
+    <label for="clientId">GitHub OAuth App client ID</label>
+    <input id="clientId" type="text" autocomplete="off" placeholder="Iv1...">
+    <div class="hint">Required for GitHub login. Enable device flow on your OAuth App.</div>
+
+    <button id="startLogin" type="button">Sign in with GitHub</button>
+    <div id="deviceCode" class="device-code" hidden></div>
+    <button id="completeLogin" class="secondary" type="button" hidden>Complete login</button>
+
     <label for="token">GitHub personal access token</label>
     <input id="token" type="password" autocomplete="off" placeholder="github_pat_...">
+    <div class="hint">Manual token is still supported as a fallback.</div>
 
     <label for="username">GitHub username</label>
     <input id="username" type="text" autocomplete="username" placeholder="octocat">
+
+    <label for="repoSelect">Choose repository</label>
+    <select id="repoSelect">
+      <option value="">Sign in or refresh repos</option>
+    </select>
+    <button id="refreshRepos" class="secondary" type="button">Refresh repositories</button>
 
     <label for="repo">Repository name</label>
     <input id="repo" type="text" placeholder="dsa_lc_journal">
@@ -86,6 +136,7 @@
     <button id="save" type="button">Save settings</button>
     <div id="status" role="status"></div>
 
+    <script src="github.js"></script>
     <script src="popup.js"></script>
   </body>
 </html>
