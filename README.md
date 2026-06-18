@@ -1,4 +1,4 @@
-# LeetCode Solutions
+# LCLOG
 
 A clean tracking repository for my LeetCode practice, organized by difficulty with solution code, notes, metadata, and progress summaries.
 

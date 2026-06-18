@@ -1,4 +1,4 @@
-# LeetCode Stats
+# LCLOG Stats
 
 ## Solved Counts
 
