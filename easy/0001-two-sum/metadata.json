@@ -1,0 +1,9 @@
+{
+  "problemNumber": 1,
+  "title": "Two Sum",
+  "difficulty": "Easy",
+  "topics": ["Array", "Hash Table"],
+  "language": "Java",
+  "status": "Solved",
+  "leetcodeUrl": "https://leetcode.com/problems/two-sum/"
+}
