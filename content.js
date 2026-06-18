@@ -1,9 +1,22 @@
 (function () {
   const SUBMIT_DELAY_MS = 1200;
   const OBSERVER_DEBOUNCE_MS = 700;
+  const SAME_STATUS_FALLBACK_MS = 4000;
+  const FINAL_STATUSES = [
+    "Accepted",
+    "Wrong Answer",
+    "Compile Error",
+    "Runtime Error",
+    "Time Limit Exceeded",
+    "Memory Limit Exceeded",
+    "Output Limit Exceeded",
+    "Presentation Error"
+  ];
+  const IN_PROGRESS_STATUSES = ["Pending", "Running", "Judging"];
   let pendingSubmission = null;
   let lastSyncedSubmissionId = "";
   let observerTimer = 0;
+  let currentLocation = window.location.href;
 
   function getProblemSlug() {
     const match = window.location.pathname.match(/\/problems\/([^/]+)/);
@@ -115,38 +128,46 @@
     );
   }
 
-  function getAcceptedResultSignature() {
-    const candidates = Array.from(
-      document.querySelectorAll(
-        "[data-e2e-locator*='submission'], [class*='result'], [class*='status'], [data-cy*='result'], div, span"
-      )
-    );
-
+  function getFinalResult() {
+    const candidates = getResultCandidates();
     for (const element of candidates) {
       const text = (element.textContent || "").trim();
+      const status = FINAL_STATUSES.find((candidate) => {
+        return text === candidate || text.startsWith(`${candidate}\n`) || text.startsWith(`${candidate} `);
+      });
 
-      if ((text === "Accepted" || /^Accepted\s*\d*/.test(text)) && text.length < 500) {
-        return text;
+      if (status && text.length < 500) {
+        return {
+          status,
+          signature: text
+        };
       }
     }
 
-    return "";
+    return null;
   }
 
   function hasResultChangedAfterSubmit() {
-    const statusPattern =
-      /^(Pending|Running|Judging|Compile Error|Wrong Answer|Runtime Error|Time Limit Exceeded|Memory Limit Exceeded|Output Limit Exceeded)/i;
-
     return getResultCandidates().some((element) => {
       const text = (element.textContent || "").trim();
-      return text.length < 500 && statusPattern.test(text);
+      return (
+        text.length < 500 &&
+        IN_PROGRESS_STATUSES.some((status) => {
+          return text === status || text.startsWith(`${status}\n`) || text.startsWith(`${status} `);
+        })
+      );
     });
   }
 
   function startSubmissionCycle() {
+    const finalResult = getFinalResult();
+
     pendingSubmission = {
       id: `${getProblemSlug()}:${Date.now()}`,
-      initialAcceptedSignature: getAcceptedResultSignature(),
+      slug: getProblemSlug(),
+      url: window.location.href,
+      submittedAt: Date.now(),
+      initialFinalSignature: finalResult ? finalResult.signature : "",
       sawResultChange: false,
       synced: false
     };
@@ -164,11 +185,16 @@
     const text = (control.textContent || "").trim();
     const ariaLabel = (control.getAttribute("aria-label") || "").trim();
     const locator = (control.getAttribute("data-e2e-locator") || "").trim();
+    const testId = (control.getAttribute("data-testid") || "").trim();
+    const id = (control.id || "").trim();
+    const submitAttributePattern = /(^|[-_\s])submit($|[-_\s])/i;
 
     return (
       /^submit$/i.test(text) ||
       /^submit$/i.test(ariaLabel) ||
-      locator.toLowerCase().includes("submit")
+      submitAttributePattern.test(locator) ||
+      submitAttributePattern.test(testId) ||
+      submitAttributePattern.test(id)
     );
   }
 
@@ -202,22 +228,11 @@
       token: "",
       username: "",
       repo: "",
-      branch: "main",
-      lastSyncedSubmissionFingerprint: ""
+      branch: "main"
     });
   }
 
-  async function saveSyncedFingerprint(fingerprint) {
-    await chrome.storage.local.set({
-      lastSyncedSubmissionFingerprint: fingerprint
-    });
-  }
-
-  function getSubmissionFingerprint(slug, language, code) {
-    return [slug, language, code || "Code was not detected."].join("\n---\n");
-  }
-
-  async function syncAcceptedSubmission(submissionId) {
+  async function syncSubmission(submissionId, finalStatus) {
     if (!pendingSubmission || pendingSubmission.id !== submissionId || lastSyncedSubmissionId === submissionId) {
       return;
     }
@@ -231,10 +246,14 @@
     const timestamp = now.toISOString();
     const pathTimestamp = isoTimestampForPath(now);
 
+    if (pendingSubmission.slug !== slug) {
+      pendingSubmission = null;
+      return;
+    }
+
     const settings = await loadSettings();
     const code = getSubmittedCode();
     const language = getLanguage();
-    const fingerprint = getSubmissionFingerprint(slug, language, code);
 
     if (!settings.token) {
       console.error("[LeetCode to GitHub] Token missing. Save it in the extension popup.");
@@ -246,12 +265,6 @@
       return;
     }
 
-    if (settings.lastSyncedSubmissionFingerprint === fingerprint) {
-      console.info("[LeetCode to GitHub] Skipped duplicate accepted submission.");
-      pendingSubmission = null;
-      return;
-    }
-
     if (!code) {
       console.warn("[LeetCode to GitHub] Submitted code was not detected. A note will be saved instead.");
     }
@@ -259,7 +272,7 @@
     const details = {
       title,
       url: window.location.href,
-      status: "Accepted",
+      status: finalStatus,
       language,
       timestamp,
       code
@@ -275,11 +288,10 @@
       branch: settings.branch || "main",
       path,
       content,
-      message: `Solve ${title}`
+      message: `${finalStatus}: ${title}`
     });
 
-    console.info(`[LeetCode to GitHub] Saved accepted submission to ${path}.`);
-    await saveSyncedFingerprint(fingerprint);
+    console.info(`[LeetCode to GitHub] Saved ${finalStatus} submission to ${path}.`);
     pendingSubmission = null;
   }
 
@@ -299,20 +311,30 @@
         pendingSubmission.sawResultChange = true;
       }
 
-      const acceptedSignature = getAcceptedResultSignature();
-
-      if (!acceptedSignature) {
+      if (pendingSubmission.slug !== getProblemSlug()) {
+        pendingSubmission = null;
         return;
       }
 
-      if (!pendingSubmission.sawResultChange && acceptedSignature === pendingSubmission.initialAcceptedSignature) {
+      const finalResult = getFinalResult();
+
+      if (!finalResult) {
+        return;
+      }
+
+      const sameVisibleResult = finalResult.signature === pendingSubmission.initialFinalSignature;
+      const waitedLongEnough = Date.now() - pendingSubmission.submittedAt >= SAME_STATUS_FALLBACK_MS;
+
+      if (!pendingSubmission.sawResultChange && sameVisibleResult && !waitedLongEnough) {
+        scheduleAcceptedCheck();
         return;
       }
 
       const submissionId = pendingSubmission.id;
+      const finalStatus = finalResult.status;
 
       window.setTimeout(() => {
-        syncAcceptedSubmission(submissionId).catch((error) => {
+        syncSubmission(submissionId, finalStatus).catch((error) => {
           console.error("[LeetCode to GitHub] Could not sync submission:", error);
         });
       }, SUBMIT_DELAY_MS);
@@ -328,6 +350,30 @@
     },
     true
   );
+
+  function resetPendingOnNavigation() {
+    if (currentLocation === window.location.href) {
+      return;
+    }
+
+    currentLocation = window.location.href;
+    pendingSubmission = null;
+    window.clearTimeout(observerTimer);
+  }
+
+  const originalPushState = history.pushState;
+  history.pushState = function () {
+    originalPushState.apply(this, arguments);
+    resetPendingOnNavigation();
+  };
+
+  const originalReplaceState = history.replaceState;
+  history.replaceState = function () {
+    originalReplaceState.apply(this, arguments);
+    resetPendingOnNavigation();
+  };
+
+  window.addEventListener("popstate", resetPendingOnNavigation);
 
   const observer = new MutationObserver(scheduleAcceptedCheck);
   observer.observe(document.body, {

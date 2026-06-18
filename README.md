@@ -1,11 +1,11 @@
-# LeetCode Accepted to GitHub
+# LeetCode Submissions to GitHub
 
-Chrome Extension Manifest V3 extension that saves accepted LeetCode submissions to a GitHub repository. Each accepted submission creates a new Markdown file, which also creates a GitHub contribution.
+Chrome Extension Manifest V3 extension that saves LeetCode submissions to a GitHub repository. Each submitted result creates one new Markdown file, which also creates a GitHub contribution.
 
 ## What It Does
 
 - Runs on `https://leetcode.com/problems/*`.
-- Watches the page for an `Accepted` submission result.
+- Watches for a LeetCode `Submit` click and saves one final result for that click.
 - Collects the problem title, problem slug, LeetCode URL, detected language, timestamp, and editor code when available.
 - Creates a new file with the GitHub REST API.
 - Stores extension settings in Chrome local storage.
@@ -17,10 +17,11 @@ Files are created at:
 solutions/{problem-slug}/{timestamp}.md
 ```
 
-Example commit message:
+Example commit messages:
 
 ```text
-Solve Two Sum
+Accepted: Two Sum
+Wrong Answer: Two Sum
 ```
 
 ## Files
@@ -84,7 +85,7 @@ Settings are stored in Chrome local storage on your machine. There is no backend
 
 1. Open a problem on `https://leetcode.com/problems/...`.
 2. Submit a solution.
-3. Wait for the result panel to show `Accepted`.
+3. Wait for the result panel to show a final status such as `Accepted`, `Wrong Answer`, or `Compile Error`.
 4. Open the browser DevTools console if you want to see sync messages.
 5. Check your GitHub repository for a new file under `solutions/{problem-slug}/`.
 
@@ -102,7 +103,7 @@ If code cannot be detected from the LeetCode editor, the extension still creates
 
 ## Notes
 
-- Failed submissions are not synced.
+- Accepted and failed submissions are synced once per `Submit` click.
 - Advanced stats are not included.
 - Screen recording is not used.
 - Existing files are not overwritten because every accepted submission uses a unique timestamp filename.
