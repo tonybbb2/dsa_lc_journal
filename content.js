@@ -1,9 +1,8 @@
 (function () {
   const SUBMIT_DELAY_MS = 1200;
   const OBSERVER_DEBOUNCE_MS = 700;
-  const DUPLICATE_COOLDOWN_MS = 45000;
-  let lastAcceptedKey = "";
-  let lastAcceptedAt = 0;
+  let pendingSubmission = null;
+  let lastSyncedSubmissionId = "";
   let observerTimer = 0;
 
   function getProblemSlug() {
@@ -108,17 +107,69 @@
     return getCodeFromTextareas() || getCodeFromMonacoDom();
   }
 
-  function hasAcceptedResult() {
+  function getResultCandidates() {
+    return Array.from(
+      document.querySelectorAll(
+        "[data-e2e-locator*='submission'], [class*='result'], [class*='status'], [data-cy*='result'], div, span"
+      )
+    );
+  }
+
+  function getAcceptedResultSignature() {
     const candidates = Array.from(
       document.querySelectorAll(
         "[data-e2e-locator*='submission'], [class*='result'], [class*='status'], [data-cy*='result'], div, span"
       )
     );
 
-    return candidates.some((element) => {
+    for (const element of candidates) {
       const text = (element.textContent || "").trim();
-      return text === "Accepted" || /^Accepted\s*\d*/.test(text);
+
+      if ((text === "Accepted" || /^Accepted\s*\d*/.test(text)) && text.length < 500) {
+        return text;
+      }
+    }
+
+    return "";
+  }
+
+  function hasResultChangedAfterSubmit() {
+    const statusPattern =
+      /^(Pending|Running|Judging|Compile Error|Wrong Answer|Runtime Error|Time Limit Exceeded|Memory Limit Exceeded|Output Limit Exceeded)/i;
+
+    return getResultCandidates().some((element) => {
+      const text = (element.textContent || "").trim();
+      return text.length < 500 && statusPattern.test(text);
     });
+  }
+
+  function startSubmissionCycle() {
+    pendingSubmission = {
+      id: `${getProblemSlug()}:${Date.now()}`,
+      initialAcceptedSignature: getAcceptedResultSignature(),
+      sawResultChange: false,
+      synced: false
+    };
+
+    scheduleAcceptedCheck();
+  }
+
+  function isSubmitAction(target) {
+    const control = target.closest("button, [role='button'], a");
+
+    if (!control) {
+      return false;
+    }
+
+    const text = (control.textContent || "").trim();
+    const ariaLabel = (control.getAttribute("aria-label") || "").trim();
+    const locator = (control.getAttribute("data-e2e-locator") || "").trim();
+
+    return (
+      /^submit$/i.test(text) ||
+      /^submit$/i.test(ariaLabel) ||
+      locator.toLowerCase().includes("submit")
+    );
   }
 
   function isoTimestampForPath(date) {
@@ -151,27 +202,39 @@
       token: "",
       username: "",
       repo: "",
-      branch: "main"
+      branch: "main",
+      lastSyncedSubmissionFingerprint: ""
     });
   }
 
-  async function syncAcceptedSubmission() {
+  async function saveSyncedFingerprint(fingerprint) {
+    await chrome.storage.local.set({
+      lastSyncedSubmissionFingerprint: fingerprint
+    });
+  }
+
+  function getSubmissionFingerprint(slug, language, code) {
+    return [slug, language, code || "Code was not detected."].join("\n---\n");
+  }
+
+  async function syncAcceptedSubmission(submissionId) {
+    if (!pendingSubmission || pendingSubmission.id !== submissionId || lastSyncedSubmissionId === submissionId) {
+      return;
+    }
+
+    lastSyncedSubmissionId = submissionId;
+    pendingSubmission.synced = true;
+
     const slug = getProblemSlug();
     const title = getProblemTitle();
     const now = new Date();
     const timestamp = now.toISOString();
     const pathTimestamp = isoTimestampForPath(now);
-    const uniqueKey = `${slug}:${pathTimestamp}`;
-
-    if (Date.now() - lastAcceptedAt < DUPLICATE_COOLDOWN_MS) {
-      return;
-    }
-
-    lastAcceptedKey = uniqueKey;
-    lastAcceptedAt = Date.now();
 
     const settings = await loadSettings();
     const code = getSubmittedCode();
+    const language = getLanguage();
+    const fingerprint = getSubmissionFingerprint(slug, language, code);
 
     if (!settings.token) {
       console.error("[LeetCode to GitHub] Token missing. Save it in the extension popup.");
@@ -183,6 +246,12 @@
       return;
     }
 
+    if (settings.lastSyncedSubmissionFingerprint === fingerprint) {
+      console.info("[LeetCode to GitHub] Skipped duplicate accepted submission.");
+      pendingSubmission = null;
+      return;
+    }
+
     if (!code) {
       console.warn("[LeetCode to GitHub] Submitted code was not detected. A note will be saved instead.");
     }
@@ -191,7 +260,7 @@
       title,
       url: window.location.href,
       status: "Accepted",
-      language: getLanguage(),
+      language,
       timestamp,
       code
     };
@@ -210,23 +279,55 @@
     });
 
     console.info(`[LeetCode to GitHub] Saved accepted submission to ${path}.`);
+    await saveSyncedFingerprint(fingerprint);
+    pendingSubmission = null;
   }
 
   function scheduleAcceptedCheck() {
+    if (!pendingSubmission || pendingSubmission.synced) {
+      return;
+    }
+
     window.clearTimeout(observerTimer);
 
     observerTimer = window.setTimeout(() => {
-      if (!hasAcceptedResult()) {
+      if (!pendingSubmission || pendingSubmission.synced) {
         return;
       }
 
+      if (hasResultChangedAfterSubmit()) {
+        pendingSubmission.sawResultChange = true;
+      }
+
+      const acceptedSignature = getAcceptedResultSignature();
+
+      if (!acceptedSignature) {
+        return;
+      }
+
+      if (!pendingSubmission.sawResultChange && acceptedSignature === pendingSubmission.initialAcceptedSignature) {
+        return;
+      }
+
+      const submissionId = pendingSubmission.id;
+
       window.setTimeout(() => {
-        syncAcceptedSubmission().catch((error) => {
+        syncAcceptedSubmission(submissionId).catch((error) => {
           console.error("[LeetCode to GitHub] Could not sync submission:", error);
         });
       }, SUBMIT_DELAY_MS);
     }, OBSERVER_DEBOUNCE_MS);
   }
+
+  document.addEventListener(
+    "click",
+    (event) => {
+      if (isSubmitAction(event.target)) {
+        startSubmissionCycle();
+      }
+    },
+    true
+  );
 
   const observer = new MutationObserver(scheduleAcceptedCheck);
   observer.observe(document.body, {
@@ -234,6 +335,4 @@
     subtree: true,
     characterData: true
   });
-
-  scheduleAcceptedCheck();
 })();
