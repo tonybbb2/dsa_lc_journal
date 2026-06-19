@@ -3,6 +3,7 @@
   const repoSection = document.getElementById("repoSection");
   const repoSelect = document.getElementById("repoSelect");
   const refreshReposButton = document.getElementById("refreshRepos");
+  const logoutButton = document.getElementById("logout");
   const deviceCode = document.getElementById("deviceCode");
   const deviceHint = document.getElementById("deviceHint");
   const status = document.getElementById("status");
@@ -84,6 +85,25 @@
     refreshReposButton.disabled = false;
   }
 
+  async function logout() {
+    logoutButton.disabled = true;
+    setStatus("Logging out...", "");
+
+    const response = await sendMessage({ type: "logout" });
+
+    if (response && response.error) {
+      setStatus(response.error, "error");
+      logoutButton.disabled = false;
+      return;
+    }
+
+    repoSelect.innerHTML = '<option value="">Choose a repository</option>';
+    repoSection.hidden = true;
+    hideDeviceCode();
+    setStatus("Logged out. Sign in again to sync submissions.", "success");
+    logoutButton.disabled = false;
+  }
+
   async function startLogin() {
     startLoginButton.disabled = true;
     setStatus("Opening GitHub sign-in...", "");
@@ -114,6 +134,7 @@
 
     if (settings.pendingUserCode && settings.authStatus === "pending") {
       showDeviceCode(settings.pendingUserCode);
+      repoSection.hidden = true;
       setStatus("Waiting for GitHub authorization...", "");
     }
 
@@ -130,17 +151,25 @@
 
     if (settings.authStatus === "expired") {
       hideDeviceCode();
+      repoSection.hidden = true;
       setStatus("GitHub sign-in expired. Try signing in again.", "error");
     }
 
     if (settings.authStatus === "error") {
       hideDeviceCode();
+      repoSection.hidden = true;
       setStatus(settings.authError || "GitHub sign-in failed.", "error");
+    }
+
+    if (!settings.authStatus || settings.authStatus === "signed-out") {
+      hideDeviceCode();
+      repoSection.hidden = true;
     }
   }
 
   startLoginButton.addEventListener("click", startLogin);
   refreshReposButton.addEventListener("click", refreshRepositories);
+  logoutButton.addEventListener("click", logout);
   repoSelect.addEventListener("change", chooseRepository);
 
   chrome.storage.onChanged.addListener((changes, areaName) => {

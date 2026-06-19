@@ -90,6 +90,23 @@
         background: #d1d5db;
       }
 
+      .danger {
+        width: 100%;
+        margin-top: 10px;
+        padding: 9px 10px;
+        border: 0;
+        border-radius: 6px;
+        color: #ffffff;
+        background: #b91c1c;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .danger:hover {
+        background: #991b1b;
+      }
+
       .device-code {
         margin-top: 12px;
         padding: 10px;
@@ -145,6 +162,7 @@
         <option value="">Choose a repository</option>
       </select>
       <button id="refreshRepos" class="secondary" type="button">Refresh repositories</button>
+      <button id="logout" class="danger" type="button">Log out</button>
     </div>
 
     <div id="status" role="status"></div>

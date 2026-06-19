@@ -128,6 +128,28 @@ async function refreshRepositories() {
   await finishGitHubLogin(settings.token);
 }
 
+async function logout() {
+  chrome.alarms.clear(AUTH_POLL_ALARM);
+
+  await chrome.storage.local.remove([
+    "token",
+    "username",
+    "repo",
+    "branch",
+    "repositories",
+    "pendingDeviceCode",
+    "pendingUserCode",
+    "pendingVerificationUri",
+    "pendingInterval",
+    "pendingExpiresAt",
+    "authError"
+  ]);
+
+  await chrome.storage.local.set({
+    authStatus: "signed-out"
+  });
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "start-github-login") {
     startGitHubLogin().then(sendResponse).catch((error) => {
@@ -138,6 +160,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   if (message.type === "refresh-repositories") {
     refreshRepositories().then(() => sendResponse({ ok: true })).catch((error) => {
+      sendResponse({ error: error.message });
+    });
+    return true;
+  }
+
+  if (message.type === "logout") {
+    logout().then(() => sendResponse({ ok: true })).catch((error) => {
       sendResponse({ error: error.message });
     });
     return true;
