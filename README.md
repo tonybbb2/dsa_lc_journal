@@ -7,15 +7,19 @@ Chrome Extension Manifest V3 extension that saves LeetCode submissions to a GitH
 - Runs on `https://leetcode.com/problems/*`.
 - Watches for a LeetCode `Submit` click and saves one final result for that click.
 - Collects the problem title, problem slug, LeetCode URL, detected language, timestamp, and editor code when available.
-- Creates a new file with the GitHub REST API.
+- Creates three files in one GitHub commit with the GitHub REST API.
 - Stores extension settings in Chrome local storage.
 - Uses a unique timestamp filename, so it does not delete or overwrite existing files.
 
 Files are created at:
 
 ```text
-solutions/{problem-slug}/{timestamp}.md
+solutions/{problem-slug}/{timestamp}/summary.md
+solutions/{problem-slug}/{timestamp}/data.json
+solutions/{problem-slug}/{timestamp}/solution.md
 ```
+
+`summary.md` is a human-readable summary, `data.json` is structured data for future analysis, and `solution.md` contains only the submitted solution.
 
 Example commit messages:
 
@@ -87,7 +91,7 @@ Settings are stored in Chrome local storage on your machine. There is no backend
 2. Submit a solution.
 3. Wait for the result panel to show a final status such as `Accepted`, `Wrong Answer`, or `Compile Error`.
 4. Open the browser DevTools console if you want to see sync messages.
-5. Check your GitHub repository for a new file under `solutions/{problem-slug}/`.
+5. Check your GitHub repository for a new timestamped folder under `solutions/{problem-slug}/`.
 
 ## Error Handling
 
@@ -99,11 +103,11 @@ The extension logs errors in the page console:
 - Code not detected
 - Missing OAuth Client ID in `config.js`
 
-If code cannot be detected from the LeetCode editor, the extension still creates the Markdown file and writes `Code was not detected.` inside the code block.
+If code cannot be detected from the LeetCode editor, the extension still creates the submission files and writes `Code was not detected.` inside `solution.md`.
 
 ## Notes
 
 - Accepted and failed submissions are synced once per `Submit` click.
 - Advanced stats are not included.
 - Screen recording is not used.
-- Existing files are not overwritten because every accepted submission uses a unique timestamp filename.
+- Existing files are not overwritten because every submission uses a unique timestamp folder.

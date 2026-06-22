@@ -202,10 +202,14 @@
     return date.toISOString().replace(/[:.]/g, "-");
   }
 
-  function markdownForSubmission(details) {
+  function solutionMarkdown(details) {
     const codeFenceLanguage = details.language.toLowerCase().replace(/[^a-z0-9#+-]/g, "");
     const code = details.code || "Code was not detected.";
 
+    return [`\`\`\`${codeFenceLanguage}`, code, "```", ""].join("\n");
+  }
+
+  function summaryMarkdown(details) {
     return [
       `# ${details.title}`,
       "",
@@ -213,14 +217,43 @@
       `- Status: ${details.status}`,
       `- Language: ${details.language}`,
       `- Timestamp: ${details.timestamp}`,
+      `- Problem slug: ${details.slug}`,
+      `- Code detected: ${details.codeDetected ? "Yes" : "No"}`,
       "",
-      "## Code",
+      "## Files",
       "",
-      `\`\`\`${codeFenceLanguage}`,
-      code,
-      "```",
+      "- `summary.md`: human-readable submission summary",
+      "- `data.json`: structured submission data for analysis",
+      "- `solution.md`: submitted solution only",
       ""
     ].join("\n");
+  }
+
+  function dataJson(details) {
+    return `${JSON.stringify(
+      {
+        schemaVersion: 1,
+        problem: {
+          title: details.title,
+          slug: details.slug,
+          url: details.url
+        },
+        submission: {
+          status: details.status,
+          language: details.language,
+          timestamp: details.timestamp,
+          codeDetected: details.codeDetected,
+          codeLength: details.code ? details.code.length : 0
+        },
+        files: {
+          summary: "summary.md",
+          data: "data.json",
+          solution: "solution.md"
+        }
+      },
+      null,
+      2
+    )}\n`;
   }
 
   async function loadSettings() {
@@ -271,27 +304,41 @@
 
     const details = {
       title,
+      slug,
       url: window.location.href,
       status: finalStatus,
       language,
       timestamp,
-      code
+      code,
+      codeDetected: Boolean(code)
     };
 
-    const path = `solutions/${slug}/${pathTimestamp}.md`;
-    const content = markdownForSubmission(details);
+    const basePath = `solutions/${slug}/${pathTimestamp}`;
+    const files = [
+      {
+        path: `${basePath}/summary.md`,
+        content: summaryMarkdown(details)
+      },
+      {
+        path: `${basePath}/data.json`,
+        content: dataJson(details)
+      },
+      {
+        path: `${basePath}/solution.md`,
+        content: solutionMarkdown(details)
+      }
+    ];
 
-    await window.LeetCodeGitHub.createFile({
+    await window.LeetCodeGitHub.createFiles({
       token: settings.token,
       username: settings.username,
       repo: settings.repo,
       branch: settings.branch || "main",
-      path,
-      content,
+      files,
       message: `${finalStatus}: ${title}`
     });
 
-    console.info(`[LeetCode to GitHub] Saved ${finalStatus} submission to ${path}.`);
+    console.info(`[LeetCode to GitHub] Saved ${finalStatus} submission to ${basePath}.`);
     pendingSubmission = null;
   }
 
