@@ -2,6 +2,9 @@
   const SUBMIT_DELAY_MS = 1200;
   const OBSERVER_DEBOUNCE_MS = 700;
   const SAME_STATUS_FALLBACK_MS = 4000;
+  const CODE_REQUEST_TIMEOUT_MS = 1000;
+  const CODE_REQUEST_EVENT = "leetcode-github:request-code";
+  const CODE_RESPONSE_EVENT = "leetcode-github:code-response";
   const FINAL_STATUSES = [
     "Accepted",
     "Wrong Answer",
@@ -120,6 +123,43 @@
     return getCodeFromTextareas() || getCodeFromMonacoDom();
   }
 
+  function requestFullEditorCode() {
+    return new Promise((resolve) => {
+      const requestId = `${Date.now()}:${Math.random()}`;
+      let timeoutId;
+
+      function finish(code) {
+        window.clearTimeout(timeoutId);
+        document.removeEventListener(CODE_RESPONSE_EVENT, handleResponse);
+        resolve(code || getSubmittedCode());
+      }
+
+      function handleResponse(event) {
+        let response;
+
+        try {
+          response = JSON.parse(event.detail);
+        } catch (_error) {
+          return;
+        }
+
+        if (response.requestId !== requestId) {
+          return;
+        }
+
+        finish(response.code);
+      }
+
+      document.addEventListener(CODE_RESPONSE_EVENT, handleResponse);
+      timeoutId = window.setTimeout(() => finish(""), CODE_REQUEST_TIMEOUT_MS);
+      document.dispatchEvent(
+        new CustomEvent(CODE_REQUEST_EVENT, {
+          detail: requestId
+        })
+      );
+    });
+  }
+
   function getResultCandidates() {
     return Array.from(
       document.querySelectorAll(
@@ -169,7 +209,8 @@
       submittedAt: Date.now(),
       initialFinalSignature: finalResult ? finalResult.signature : "",
       sawResultChange: false,
-      synced: false
+      synced: false,
+      codePromise: requestFullEditorCode()
     };
 
     scheduleAcceptedCheck();
@@ -270,6 +311,7 @@
       return;
     }
 
+    const codePromise = pendingSubmission.codePromise;
     lastSyncedSubmissionId = submissionId;
     pendingSubmission.synced = true;
 
@@ -285,7 +327,7 @@
     }
 
     const settings = await loadSettings();
-    const code = getSubmittedCode();
+    const code = await codePromise;
     const language = getLanguage();
 
     if (!settings.token) {
