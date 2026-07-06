@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Can Place Flowers",
+    "slug": "can-place-flowers",
+    "url": "https://leetcode.com/problems/can-place-flowers/submissions/2058472795/"
+  },
+  "submission": {
+    "status": "Compile Error",
+    "language": "Java",
+    "timestamp": "2026-07-06T18:56:56.424Z",
+    "codeDetected": true,
+    "codeLength": 94
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
