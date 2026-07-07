@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Boats to Save People",
+    "slug": "boats-to-save-people",
+    "url": "https://leetcode.com/problems/boats-to-save-people/submissions/2059752145/?envType=problem-list-v2&envId=greedy"
+  },
+  "submission": {
+    "status": "Wrong Answer",
+    "language": "Java",
+    "timestamp": "2026-07-07T19:44:09.318Z",
+    "codeDetected": true,
+    "codeLength": 956
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
