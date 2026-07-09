@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Assign Cookies",
+    "slug": "assign-cookies",
+    "url": "https://leetcode.com/problems/assign-cookies/submissions/2061159985/?envType=problem-list-v2&envId=greedy"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-07-09T03:10:59.479Z",
+    "codeDetected": true,
+    "codeLength": 373
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
