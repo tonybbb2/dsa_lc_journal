@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "House Robber",
+    "slug": "house-robber",
+    "url": "https://leetcode.com/problems/house-robber/submissions/2064170805/?envType=problem-list-v2&envId=oizxjoit"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-07-11T18:05:07.241Z",
+    "codeDetected": true,
+    "codeLength": 459
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
