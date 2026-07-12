@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Counting Bits",
+    "slug": "counting-bits",
+    "url": "https://leetcode.com/problems/counting-bits/?envType=problem-list-v2&envId=dynamic-programming"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-07-12T16:24:29.132Z",
+    "codeDetected": true,
+    "codeLength": 360
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
