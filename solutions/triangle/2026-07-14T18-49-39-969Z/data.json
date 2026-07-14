@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Triangle",
+    "slug": "triangle",
+    "url": "https://leetcode.com/problems/triangle/"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-07-14T18:49:39.969Z",
+    "codeDetected": true,
+    "codeLength": 551
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
