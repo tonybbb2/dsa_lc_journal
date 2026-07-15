@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "GCD of Odd and Even Sums",
+    "slug": "gcd-of-odd-and-even-sums",
+    "url": "https://leetcode.com/problems/gcd-of-odd-and-even-sums/submissions/2068995662/?envType=daily-question&envId=2026-07-15"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-07-15T18:03:46.098Z",
+    "codeDetected": true,
+    "codeLength": 83
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
