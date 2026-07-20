@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Counting Bits",
+    "slug": "counting-bits",
+    "url": "https://leetcode.com/problems/counting-bits/submissions/2074015118/"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-07-20T03:25:25.297Z",
+    "codeDetected": true,
+    "codeLength": 360
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
