@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Two sum",
+    "slug": "two-sum",
+    "url": "https://leetcode.com/problems/two-sum/submissions/2075205730/?envType=problem-list-v2&envId=oizxjoit"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-07-21T02:48:12.095Z",
+    "codeDetected": true,
+    "codeLength": 593
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
