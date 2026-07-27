@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Missing Number",
+    "slug": "missing-number",
+    "url": "https://leetcode.com/problems/missing-number/submissions/2083635118/?envType=problem-list-v2&envId=oizxjoit"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-07-27T16:23:47.325Z",
+    "codeDetected": true,
+    "codeLength": 345
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
