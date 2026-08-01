@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Contains Duplicate",
+    "slug": "contains-duplicate",
+    "url": "https://leetcode.com/problems/contains-duplicate/?envType=problem-list-v2&envId=oizxjoit"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-08-01T18:10:20.443Z",
+    "codeDetected": true,
+    "codeLength": 336
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
