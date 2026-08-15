@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Sum of Left Leaves",
+    "slug": "sum-of-left-leaves",
+    "url": "https://leetcode.com/problems/sum-of-left-leaves/submissions/2108280136/"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-08-15T22:13:09.893Z",
+    "codeDetected": true,
+    "codeLength": 739
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
