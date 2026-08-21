@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Reverse Linked List",
+    "slug": "reverse-linked-list",
+    "url": "https://leetcode.com/problems/reverse-linked-list/submissions/2114664692/?envType=problem-list-v2&envId=oizxjoit"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-08-21T05:14:39.892Z",
+    "codeDetected": true,
+    "codeLength": 546
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
