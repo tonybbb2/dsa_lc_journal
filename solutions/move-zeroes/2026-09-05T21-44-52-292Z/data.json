@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Move Zeroes",
+    "slug": "move-zeroes",
+    "url": "https://leetcode.com/problems/move-zeroes/submissions/2132176219/"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-09-05T21:44:52.292Z",
+    "codeDetected": true,
+    "codeLength": 410
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
