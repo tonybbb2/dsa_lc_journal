@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Length of Last Word",
+    "slug": "length-of-last-word",
+    "url": "https://leetcode.com/problems/length-of-last-word/submissions/2133101617/?envType=problem-list-v2&envId=string"
+  },
+  "submission": {
+    "status": "Wrong Answer",
+    "language": "Java",
+    "timestamp": "2026-09-06T17:10:38.742Z",
+    "codeDetected": true,
+    "codeLength": 455
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
