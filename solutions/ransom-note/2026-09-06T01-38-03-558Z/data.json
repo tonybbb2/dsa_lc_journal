@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Ransom Note",
+    "slug": "ransom-note",
+    "url": "https://leetcode.com/problems/ransom-note/submissions/2132239368/"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-09-06T01:38:03.558Z",
+    "codeDetected": true,
+    "codeLength": 486
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
