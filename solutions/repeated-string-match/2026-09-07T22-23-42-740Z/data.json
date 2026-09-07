@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Repeated String Match",
+    "slug": "repeated-string-match",
+    "url": "https://leetcode.com/problems/repeated-string-match/submissions/2134440043/"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-09-07T22:23:42.740Z",
+    "codeDetected": true,
+    "codeLength": 457
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
