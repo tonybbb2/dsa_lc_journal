@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Is Subsequence",
+    "slug": "is-subsequence",
+    "url": "https://leetcode.com/problems/is-subsequence/submissions/2136882269/"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-09-09T22:28:27.835Z",
+    "codeDetected": true,
+    "codeLength": 307
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
