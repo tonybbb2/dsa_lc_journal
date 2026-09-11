@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "For any Coder who is asking Why \"Defang\"?",
+    "slug": "defanging-an-ip-address",
+    "url": "https://leetcode.com/problems/defanging-an-ip-address/"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-09-11T02:23:47.985Z",
+    "codeDetected": true,
+    "codeLength": 358
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
