@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Add Digits",
+    "slug": "add-digits",
+    "url": "https://leetcode.com/problems/add-digits/submissions/2140098819/"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-09-13T02:19:27.358Z",
+    "codeDetected": true,
+    "codeLength": 398
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
