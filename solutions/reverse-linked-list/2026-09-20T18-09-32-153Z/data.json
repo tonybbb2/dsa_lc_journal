@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Intuition💡:",
+    "slug": "reverse-linked-list",
+    "url": "https://leetcode.com/problems/reverse-linked-list/submissions/2147981239/"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-09-20T18:09:32.153Z",
+    "codeDetected": true,
+    "codeLength": 546
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
