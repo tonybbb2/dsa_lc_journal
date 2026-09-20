@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Valid Parentheses",
+    "slug": "valid-parentheses",
+    "url": "https://leetcode.com/problems/valid-parentheses/?envType=problem-list-v2&envId=oizxjoit"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-09-20T17:33:33.043Z",
+    "codeDetected": true,
+    "codeLength": 257
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
