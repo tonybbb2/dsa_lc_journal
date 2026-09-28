@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Asteroid Collision",
+    "slug": "asteroid-collision",
+    "url": "https://leetcode.com/problems/asteroid-collision/submissions/2156372681/"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-09-28T18:48:06.510Z",
+    "codeDetected": true,
+    "codeLength": 1318
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
