@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Problem Rehearsal",
+    "slug": "maximum-nesting-depth-of-the-parentheses",
+    "url": "https://leetcode.com/problems/maximum-nesting-depth-of-the-parentheses/submissions/2156393947/?envType=daily-question&envId=2026-09-28"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-09-28T19:14:49.285Z",
+    "codeDetected": true,
+    "codeLength": 478
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
