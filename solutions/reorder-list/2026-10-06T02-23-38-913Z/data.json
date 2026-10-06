@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Reorder List",
+    "slug": "reorder-list",
+    "url": "https://leetcode.com/problems/reorder-list/"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-10-06T02:23:38.913Z",
+    "codeDetected": true,
+    "codeLength": 2066
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
