@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Balanced Binary Tree",
+    "slug": "balanced-binary-tree",
+    "url": "https://leetcode.com/problems/balanced-binary-tree/submissions/2176713357/?envType=problem-list-v2&envId=tree"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-10-20T03:39:54.679Z",
+    "codeDetected": true,
+    "codeLength": 1190
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
