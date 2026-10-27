@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Majority Element",
+    "slug": "majority-element",
+    "url": "https://leetcode.com/problems/majority-element/submissions/2182725194/?envType=problem-list-v2&envId=hash-table"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-10-27T03:15:05.358Z",
+    "codeDetected": true,
+    "codeLength": 726
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
