@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Non-overlapping Intervals",
+    "slug": "non-overlapping-intervals",
+    "url": "https://leetcode.com/problems/non-overlapping-intervals/submissions/2189663119/?utm_source=chatgpt.com"
+  },
+  "submission": {
+    "status": "Wrong Answer",
+    "language": "Java",
+    "timestamp": "2026-11-04T21:19:37.365Z",
+    "codeDetected": true,
+    "codeLength": 412
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
