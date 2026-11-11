@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Triangle",
+    "slug": "triangle",
+    "url": "https://leetcode.com/problems/triangle/submissions/2194065967/?envType=problem-list-v2&envId=dynamic-programming"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-11-11T17:27:28.684Z",
+    "codeDetected": true,
+    "codeLength": 551
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
