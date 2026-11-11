@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "problem": {
+    "title": "Climbing Stairs",
+    "slug": "climbing-stairs",
+    "url": "https://leetcode.com/problems/climbing-stairs/submissions/2194058044/?envType=problem-list-v2&envId=dynamic-programming"
+  },
+  "submission": {
+    "status": "Accepted",
+    "language": "Java",
+    "timestamp": "2026-11-11T17:17:06.421Z",
+    "codeDetected": true,
+    "codeLength": 345
+  },
+  "files": {
+    "summary": "summary.md",
+    "data": "data.json",
+    "solution": "solution.md"
+  }
+}
